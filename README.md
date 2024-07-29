@@ -15,7 +15,7 @@ You have to wire your ESP32 or ESP8266 according to this Schematics.
 
 ### Obegränsad
 
-❗❗❗TODO❗❗❗
+![Connections_Steckplatine](https://github.com/user-attachments/assets/9a1ddf73-cdb1-4e30-aeef-0876422aca2a)
 
 ## Software
 
