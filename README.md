@@ -22,6 +22,9 @@ You have to wire your ESP32 or ESP8266 according to this Schematics.
 Here is a short config to demonstrate the usage to display time on Frekvens and Obegränsad:
 
 ### Frekvens
+<details>
+<summary>D1 mini</summary>
+  
 ```yaml
 esphome:
   name: frekvens-clock
@@ -76,7 +79,13 @@ display:
 
 ```
 
+</details>
+
 ### Obegränsad
+
+<details>
+<summary>D1 mini</summary>
+  
 ```yaml
 esphome:
   name: obegraensad-clock
@@ -130,3 +139,5 @@ display:
       it.strftime(4, 8, id(b03), "%M", id(ntp_time).now());
 
 ```
+
+</details>
