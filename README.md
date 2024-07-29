@@ -22,6 +22,7 @@ You have to wire your ESP32 or ESP8266 according to this Schematics.
 Here is a short config to demonstrate the usage to display time on Frekvens and Obegränsad:
 
 ### Frekvens
+
 <details>
 <summary>D1 mini</summary>
   
@@ -133,6 +134,78 @@ display:
     latch_pin: 12
     clock_pin: 04
     data_pin: 05
+
+    lambda: |-
+      it.strftime(4, 0, id(b03), "%H", id(ntp_time).now());
+      it.strftime(4, 8, id(b03), "%M", id(ntp_time).now());
+
+```
+
+</details>
+
+<details>
+<summary>ESP32</summary>
+
+```yaml
+esphome:
+  name: obegraensad-clock
+  platform: ESP32
+  board: esp32dev
+  platformio_options:
+    lib_deps:
+      - Wire                            # Also required by GFX.
+      - SPI                             # Also required by GFX.
+      - adafruit/Adafruit BusIO         # Required by GFX Library.
+      - adafruit/Adafruit GFX Library   # Required for FrekvensPanel.
+      - me-no-dev/ESPAsyncTCP
+
+external_components:
+  - source: github://sascha-hemi/esphome-ikea-led-matrix@master
+    components: [ obegraensad_panel ]
+    
+binary_sensor:
+  - platform: gpio
+    # External PushButton
+    pin:
+      number: GPIO16
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    name: button
+    filters:
+      - delayed_on: 10ms
+
+light:
+  - platform: monochromatic
+    name: 'Brightness'
+    output: matrix_brightness
+    restore_mode: RESTORE_DEFAULT_ON
+    
+output:
+  - platform: ledc
+    id: matrix_brightness
+    zero_means_zero: true
+    pin:
+      number: GPIO26
+      inverted: True
+
+time:
+  - platform: sntp
+    id: ntp_time
+    timezone: 'Europe/Berlin'
+
+font:
+  - file: "04B03.ttf"
+    id: b03
+    size: 8
+
+display:
+  - platform: obegraensad_panel
+    rotation: 90
+    latch_pin: 12
+    clock_pin: 14
+    data_pin: 27
 
     lambda: |-
       it.strftime(4, 0, id(b03), "%H", id(ntp_time).now());
